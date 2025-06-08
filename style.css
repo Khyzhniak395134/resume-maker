@@ -126,7 +126,6 @@ h1 {
   animation: fadeIn 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Виправлення прозорості та кольору H1 у прев’ю та PDF шаблонів */
 #modalPreview h1,
 .pdf-container h1 {
   opacity: 1 !important;
@@ -194,7 +193,6 @@ button {
   animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Додаємо ефект при наведенні на кнопки */
 button:hover, button:focus-visible {
   background-color: #4caf50;
   transform: scale(1.05);
@@ -211,7 +209,6 @@ details {
   animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Сучасний дизайн стрілочок для details summary (вкладка "Досвід") */
 details[open] > summary::before,
 details > summary::before {
   content: '';
@@ -284,9 +281,6 @@ textarea {
   min-height: 60px;
 }
 
-/* -------------------------- */
-/* КРОК 3: Шаблони */
-/* -------------------------- */
 
 .template-selection {
   display: flex;
@@ -341,7 +335,6 @@ textarea {
   animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Template 1 preview */
 .template-option[data-template="template1"] .template-preview {
   background: linear-gradient(135deg, #e3f0ff 0%, #f8f9fa 100%);
   border: 2px solid #007bff;
@@ -353,7 +346,6 @@ textarea {
   font-weight: bold;
 }
 
-/* Template 2 preview */
 .template-option[data-template="template2"] .template-preview {
   background: linear-gradient(135deg, #fffbe7 0%, #f9eec0 100%);
   border: 2px solid #b8860b;
@@ -365,7 +357,6 @@ textarea {
   font-weight: bold;
 }
 
-/* Template 3 preview */
 .template-option[data-template="template3"] .template-preview {
   background: linear-gradient(135deg, #e3e3e3 0%, #f5f5f5 100%);
   border: 2px solid #222;
@@ -383,15 +374,11 @@ textarea {
   text-align: center;
 }
 
-/* Кнопка під шаблонами — як на попередніх вкладках */
 .template-selection + button {
   margin-top: 30px;
   width: 100%;
 }
 
-/* -------------------------- */
-/* Модальне вікно */
-/* -------------------------- */
 
 .modal {
   position: fixed;
@@ -481,9 +468,6 @@ textarea {
   box-shadow: 0 0 12px #007bff44;
 }
 
-/* -------------------------- */
-/* Валідація та підказки */
-/* -------------------------- */
 
 .error {
   border: 2px solid #ff3b3b !important;
@@ -510,7 +494,6 @@ textarea {
   animation: fadeIn 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Для блоку вибору шаблону */
 .template-selection.error {
   border: 2px solid #ff3b3b;
   border-radius: 14px;
@@ -520,9 +503,6 @@ textarea {
   animation: shake 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* -------------------------- */
-/* Мобільне масштабування */
-/* -------------------------- */
 
 @media (max-width: 600px) {
   html, body {
@@ -531,7 +511,6 @@ textarea {
     overflow-x: hidden;
   }
   body {
-    /* Без масштабування! */
     transform: none;
     width: 100vw;
     min-width: 100vw;
