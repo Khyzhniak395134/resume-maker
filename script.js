@@ -39,33 +39,27 @@ document.getElementById('resumeForm').addEventListener('submit', (e) => {
   }
 });
 
-// --- Перевірка всіх обов'язкових полів ---
 function validateAllFields() {
   let valid = true;
-  // Очистити попередні помилки
   document.querySelectorAll('.error-message').forEach(e => e.remove());
   document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
 
-  // Знайти всі обов'язкові поля у формі
   const requiredFields = document.querySelectorAll('#resumeForm input[required], #resumeForm textarea[required], #resumeForm select[required]');
   let firstInvalidField = null;
   requiredFields.forEach(field => {
     if (!field.value.trim()) {
       valid = false;
       field.classList.add('error');
-      // Додаємо підказку, якщо її ще немає
       if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-message')) {
         const msg = document.createElement('div');
         msg.className = 'error-message';
         msg.textContent = 'Це поле обов’язкове!';
         field.after(msg);
       }
-      // Запам'ятати перше невалідне поле
       if (!firstInvalidField) firstInvalidField = field;
     }
   });
 
-  // Якщо є невалідне поле — перейти на відповідний крок і прокрутити до нього
   if (!valid && firstInvalidField) {
     const container = firstInvalidField.closest('.container');
     if (container) {
@@ -84,7 +78,6 @@ function validateAllFields() {
   return valid;
 }
 
-// --- КРОК 3: Перевірка вибору шаблону ---
 function validateTemplateSelected() {
   const templateBlock = document.getElementById('templateBlock');
   // Видалити попередні помилки
@@ -94,21 +87,18 @@ function validateTemplateSelected() {
 
   if (!window.selectedTemplate) {
     templateBlock.classList.add('error');
-    // Додаємо підказку, якщо її ще немає
     if (!templateBlock.querySelector('.error-message')) {
       const msg = document.createElement('div');
       msg.className = 'error-message';
       msg.textContent = 'Оберіть шаблон для резюме!';
       templateBlock.appendChild(msg);
     }
-    // Прокрутити до блоку шаблонів
     templateBlock.scrollIntoView({behavior: 'smooth', block: 'center'});
     return false;
   }
   return true;
 }
 
-// --- КРОК 4: Генерація PDF ---
 function generatePDF() {
   const data = getFormData();
   let html = '';
@@ -116,11 +106,9 @@ function generatePDF() {
   if (window.selectedTemplate === 'template2') html = template2HTML(data, true);
   if (window.selectedTemplate === 'template3') html = template3HTML(data, true);
 
-  // Створюємо тимчасовий контейнер для PDF
   const pdfContainer = document.createElement('div');
   pdfContainer.className = 'pdf-container';
   pdfContainer.innerHTML = html;
-  // A4: 210mm x 297mm = 793.7 x 1122.5 px при 96dpi
   pdfContainer.style.width = '793px';
   pdfContainer.style.minHeight = '1122px';
   pdfContainer.style.background = '#fff';
@@ -143,7 +131,6 @@ function generatePDF() {
   });
 }
 
-// --- Обробник кнопки "Згенерувати резюме" ---
 document.getElementById('generateResume').addEventListener('click', function() {
   const fieldsOk = validateAllFields();
   const templateOk = validateTemplateSelected();
@@ -152,7 +139,6 @@ document.getElementById('generateResume').addEventListener('click', function() {
   }
 });
 
-// --- КРОК 5: UX — очищення підказок при введенні та виборі шаблону ---
 document.addEventListener('input', function(e) {
   if (e.target.classList.contains('error')) {
     e.target.classList.remove('error');
@@ -160,7 +146,6 @@ document.addEventListener('input', function(e) {
       e.target.nextElementSibling.remove();
     }
   }
-  // Для блоку шаблонів
   if (e.target.closest('#templateBlock')) {
     const templateBlock = document.getElementById('templateBlock');
     templateBlock.classList.remove('error');
@@ -177,18 +162,14 @@ document.querySelectorAll('.template-option').forEach(option => {
   });
 });
 
-// --- Template Preview Logic ---
 
 function getFormData() {
-  // Особисті дані
   const name = document.getElementById('name').value || '';
   const email = document.getElementById('email').value || '';
   const phone = document.getElementById('phone').value || '';
   const summary = document.getElementById('summary').value || '';
   const city = document.getElementById('city').value || '';
-  // Навички
   const skills = document.getElementById('skills') ? document.getElementById('skills').value : '';
-  // Досвід роботи (перший блок)
   const jobBlock = document.querySelectorAll('details')[0];
   const jobInputs = jobBlock.querySelectorAll('input, textarea, select');
   let job = {};
@@ -199,7 +180,6 @@ function getFormData() {
     if (input.type === 'text' || input.tagName === 'TEXTAREA') {
       job[input.placeholder] = input.value;
     } else if (input.tagName === 'SELECT') {
-      // 0 - місяць початку, 1 - рік початку, 2 - місяць кінця, 3 - рік кінця
       if (selectCount === 0) jobMonths.start = input.value;
       if (selectCount === 1) jobYears.start = input.value;
       if (selectCount === 2) jobMonths.end = input.value;
@@ -208,7 +188,6 @@ function getFormData() {
       job[input.parentElement.previousElementSibling ? input.parentElement.previousElementSibling.textContent : ''] = input.value;
     }
   });
-  // Освіта (другий блок)
   const eduBlock = document.querySelectorAll('details')[1];
   const eduInputs = eduBlock.querySelectorAll('input, textarea, select');
   let edu = {};
@@ -236,7 +215,6 @@ function getFormData() {
   };
 }
 
-// --- Template HTML Generators ---
 
 function formatPeriod(monthStart, yearStart, monthEnd, yearEnd, label) {
   if (yearStart && yearEnd) {
@@ -368,7 +346,6 @@ function template3HTML(data, isPDF = false) {
   `;
 }
 
-// --- Modal Logic ---
 
 document.addEventListener('DOMContentLoaded', function() {
   let selectedTemplate = null;
@@ -377,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const selectBtn = document.getElementById('selectTemplateBtn');
   const closeModal = document.getElementById('closeModal');
 
-  // Show modal with live preview
   document.querySelectorAll('.template-option').forEach(option => {
     option.addEventListener('click', function() {
       const template = this.getAttribute('data-template');
@@ -393,7 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   selectBtn.addEventListener('click', function() {
-    // Mark the selected template visually
     document.querySelectorAll('.template-option').forEach(option => {
       option.classList.toggle('selected', option.getAttribute('data-template') === selectedTemplate);
     });
@@ -406,7 +381,6 @@ document.addEventListener('DOMContentLoaded', function() {
     modal.style.display = 'none';
   });
 
-  // Close modal when clicking outside content
   modal.addEventListener('click', function(e) {
     if (e.target === modal) modal.style.display = 'none';
   });
